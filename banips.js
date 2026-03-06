@@ -1,11 +1,11 @@
 function banips(ws) {
 
 
-	if (ws._socket.remoteAddress == '::ffff:' + 'xxxxx') { { ws.close(); } }//PUT REASON HERE.
-
+	var socket = new WebSocket("ws://localhost:8080");
 
 }
 
 banips.prototype = {
 };
+
 module.exports = banips;
