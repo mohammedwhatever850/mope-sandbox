@@ -1,6 +1,9 @@
 {
+  "name": "mopeuniversal",
+  "version": "1.0.0",
+  "main": "server.js",
   "dependencies": {
-    "express": "^4.18.2",
+    "express": "^4.21.2",
     "victor": "^1.1.0",
     "ws": "^8.19.0"
   }
