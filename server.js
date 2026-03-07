@@ -1,37 +1,29 @@
-const fs = require('fs');
-console.log("Current Directory:", __dirname);
-console.log("Files in this folder:", fs.readdirSync(__dirname));
-console.log("Files in parent folder:", fs.readdirSync(path.join(__dirname, '..')));
-
 const express = require('express');
 const path = require('path');
+const fs = require('fs');
 const gameserver = require('./gameserver');
 
 const app = express();
-const port = process.env.PORT || 80;
 
-// 1. Force the CSP to allow 'eval' for your injections
+// 1. Set CSP Headers FIRST to allow 'eval' injections
 app.use((req, res, next) => {
   res.setHeader(
     "Content-Security-Policy", 
-    "script-src 'self' 'unsafe-inline' 'unsafe-eval'; " +
+    "default-src * 'unsafe-inline' 'unsafe-eval'; " +
+    "script-src * 'self' 'unsafe-inline' 'unsafe-eval'; " +
     "connect-src *; " + 
     "style-src 'self' 'unsafe-inline';"
   );
   next();
 });
 
-app.get('/', (req, res) => {
-  // Use '..' to go UP one folder from 'src' to find the main directory
-  res.sendFile(path.join(__dirname, '..', 'sandbox.html'));
-});
+// 2. Serve static files from the current directory
+app.use(express.static(__dirname));
 
-// 3. Fix "Cannot GET /" by explicitly sending the file
+// 3. The Main Route - Points to sandbox.html in the same folder
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'sandbox.html'));
 });
 
-// 4. Initialize the game logic
+// 4. Initialize game logic (Port/Listen is handled inside gameserver.js)
 new gameserver(app);
-
-
