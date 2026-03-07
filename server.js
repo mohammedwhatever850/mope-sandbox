@@ -3,7 +3,7 @@ const http = require('http');
 const path = require('path');
 const gameserver = require('./gameserver');
 
-const app = express();
+app = express();
 const server = http.createServer(app);
 
 // 1. Set CSP for your game scripts
@@ -24,3 +24,4 @@ server.listen(port, "0.0.0.0", () => {
   // 4. Pass the server and app into your game logic
   new gameserver(server, app);
 });
+
