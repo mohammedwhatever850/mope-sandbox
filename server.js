@@ -4,14 +4,10 @@ const gameserver = require('./gameserver');
 
 const app = express();
 
-// 1. Manual CSP (Better than Helmet for your specific needs)
+// 1. CSP and Cache Killing
 app.use((req, res, next) => {
   res.setHeader("Content-Security-Policy", "default-src * 'unsafe-inline' 'unsafe-eval'; script-src * 'self' 'unsafe-inline' 'unsafe-eval'; connect-src *; style-src * 'unsafe-inline';");
-  
-  // 2. Disable Caching so you don't keep seeing "Hello World"
-  res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate");
-  res.setHeader("Pragma", "no-cache");
-  res.setHeader("Expires", "0");
+  res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
   next();
 });
 
@@ -21,5 +17,9 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'sandbox.html'));
 });
 
-// Start the game logic
+// 2. Initialize the game
 new gameserver(app);
+
+// 3. New log message to verify deployment
+const now = new Date().toLocaleTimeString();
+console.log(`[${now}] SUCCESS: Server is running the UPDATED code!`);
