@@ -1,77 +1,59 @@
-
-function gameserver(port) {
+// Change 'port' to 'server' and add 'app' so we can use the ones from server.js
+function gameserver(server, app) { 
 	const utils1 = require("./modules/IMPmodules/util")
-
 	const util = new utils1()
 	const vector = require('victor');
-
 	const ipban = require("./banips.js")
 	const devsip = require("./devip.js")
-
 	const writer1 = require("./modules/IMPmodules/writer.js");
 	const writer = new writer1();
 	const fun1 = require("./entity/funs.js");
 	const fun = new fun1();
 	const game1 = require('./game')
 	const game = new game1();
-
 	const name1 = require("./modules/botnames")
 	const name = new name1()
-
 	const tierload1 = require("./playergameplay/choices/tierschoice")
 	const tierload = new tierload1()
-
 	const death = require("./handler/deathhandle")
-
 	const reader = require("./modules/reader.js");
-
 	const WebSocket = require('ws');
-
 	const player = require("./entity/objects/objects/player.js");
 	const hidinghole = require("./entity/objects/objects/waterspot");
-
 	const bigabilities = require("./playergameplay/abilitiesuse/abilitiesusebigbutton");
 	const miniabilities = require("./playergameplay/abilitiesuse/abilitiesuseminibutton");
 	const sclick = require("./playergameplay/abilitiesuse/sclick");
-
 	const map = require("./modules/map.js")
-
 	const zoomentities = require("./playergameplay/zoomentities.js");
-
 	const worldUpdate = require("./handler/worldupdate/normalworldupd");
 	const devcommands = require("./modules/chat.js")
 	const newobjids = require("./objids.js")
-
-
 	const apexchoices = require('./playergameplay/choices/choices.js');
 	const animalswitcher = require("./playergameplay/animalswitch.js");
 	const tierswitcher = require("./playergameplay/tierswitch.js");
-
 	const arena = require("./entity/objects/objects/arena")
-
-
 	const fs = require('fs')
 	const quadtree = require("./modules/quadtree");
 	const createbot = require("./entity/bot.js");
 	const Rectangle = require("./modules/rectangle")
 	const border = new Rectangle(game.load(0) / 2, game.load(1) / 2, game.load(0), game.load(1))
-
 	const QuadTree = new quadtree(null, border, 12, 12)
 
+	// Attach the WebSocket server to the existing HTTP server
+	const wss = new WebSocket.Server({ server }); 
+
+    // --- DELETE THE OLD app.listen AND express() BLOCKS FROM HERE ---
+    // We don't need them here because server.js handles the port now.
 
 	var iper = ''
 	let new1stimecount = Date.now()
 	let updtime = Date.now()
 	let boradupd = Date.now()
-
-
-
-	//	console.log(ping)
-
-
 	const aobjids = new newobjids()
+    
+    // ... Rest of your game logic (TESTING, MAXBOTS, etc.)
 
-
+	
 const express = require('express');
 const http = require('http');
 const app = express();
@@ -1008,6 +990,7 @@ gameserver.prototype = {
 
 }
 module.exports = gameserver
+
 
 
 
