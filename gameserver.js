@@ -73,8 +73,17 @@ function gameserver(port) {
 
 
 
-// This tells the WebSocket to share the port with the HTTP server
-const wss = new WebSocket.Server({ noServer: true });
+const express = require('express')
+const app = express()
+const port = process.env.PORT || 4000
+
+app.get('/', (req, res) => {
+  res.send('Hello World!')
+})
+
+app.listen(port, () => {
+  console.log(`Example app listening on port ${port}`)
+})
 
 
 
@@ -996,3 +1005,4 @@ gameserver.prototype = {
 
 }
 module.exports = gameserver
+
