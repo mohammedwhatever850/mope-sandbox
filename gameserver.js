@@ -75,7 +75,7 @@ function gameserver(port) {
 
 const express = require('express')
 const app = express()
-server.listen(process.env.PORT || 4000, "0.0.0.0", () => {
+app.listen(process.env.PORT || 4000, "0.0.0.0", () => {
     console.log("Server is online!");
 });
 
@@ -1007,5 +1007,6 @@ gameserver.prototype = {
 
 }
 module.exports = gameserver
+
 
 
