@@ -81,13 +81,13 @@ const server = http.createServer(app);
 const wss = new WebSocket.Server({ server }); 
 
 // Your existing logic...
-port = process.env.PORT || 10000; 
+ 
+// Use a unique name like 'myPort' to avoid SyntaxErrors
+const myPort = process.env.PORT || 10000; 
 
-	
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
-
+app.listen(myPort, "0.0.0.0", () => {
+    console.log(`[DEPLOY SUCCESS] Game is running on port ${myPort}`);
+});
 
 
 
@@ -1008,6 +1008,7 @@ gameserver.prototype = {
 
 }
 module.exports = gameserver
+
 
 
 
