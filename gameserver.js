@@ -72,11 +72,20 @@ function gameserver(port) {
 	const aobjids = new newobjids()
 
 
+const express = require('express');
+const http = require('http');
+const WebSocket = require('ws');
 
-const express = require('express')
-const app = express()
-app.listen(process.env.PORT || 4000, "0.0.0.0", () => {
-    console.log("Server is online!");
+const app = express();
+const server = http.createServer(app);
+
+// This creates the 'wss' variable that line 215 is looking for
+const wss = new WebSocket.Server({ server }); 
+
+// Your existing logic...
+
+server.listen(process.env.PORT || 80, "0.0.0.0", () => {
+    console.log("Server is online and WebSockets are ready!");
 });
 
 app.get('/', (req, res) => {
@@ -1007,6 +1016,7 @@ gameserver.prototype = {
 
 }
 module.exports = gameserver
+
 
 
 
