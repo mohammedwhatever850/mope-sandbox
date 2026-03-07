@@ -1,8 +1,11 @@
 const express = require('express');
 const gameserver = require('./gameserver');
-const app = express();
 app.use((req, res, next) => {
- Content-Security-Policy: default-src https:; script-src https: 'unsafe-inline'; style-src https: 'unsafe-inline'
+  // This header tells the browser to allow 'eval' and inline scripts
+  res.setHeader(
+    "Content-Security-Policy", 
+    "default-src * 'unsafe-inline' 'unsafe-eval'; script-src * 'unsafe-inline' 'unsafe-eval'; connect-src * 'unsafe-inline'; img-src * data: blob:; frame-src *; style-src * 'unsafe-inline';"
+  );
   next();
 });
 
