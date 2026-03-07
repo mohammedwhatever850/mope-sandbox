@@ -1,31 +1,26 @@
 const express = require('express');
+const http = require('http');
 const path = require('path');
-const fs = require('fs');
 const gameserver = require('./gameserver');
 
 const app = express();
+const server = http.createServer(app);
 
-// 1. CSP for Eval (Required for your userscripts)
+// 1. Set CSP for your game scripts
 app.use((req, res, next) => {
   res.setHeader("Content-Security-Policy", "default-src * 'unsafe-inline' 'unsafe-eval'; script-src * 'self' 'unsafe-inline' 'unsafe-eval'; connect-src *; style-src * 'unsafe-inline';");
   next();
 });
 
-// 2. Explicitly serve index.html for BOTH / and /index.html
-const serveIndex = (req, res) => {
-  const filePath = path.join(__dirname, 'index.html');
-  if (fs.existsSync(filePath)) {
-    res.sendFile(filePath);
-  } else {
-    res.status(404).send(`Missing: index.html was not found in ${__dirname}`);
-  }
-};
-
-app.get('/', serveIndex);
-app.get('/index.html', serveIndex);
-
-// 3. Static middleware AFTER routes to prevent conflicts
+// 2. Serve your game files
 app.use(express.static(__dirname));
+app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
 
-// 4. Start the game logic
-new gameserver(app);
+// 3. Start the server on Render's port
+const port = process.env.PORT || 10000;
+server.listen(port, "0.0.0.0", () => {
+  console.log(`[RENDER] HTTP and WebSockets active on port ${port}`);
+  
+  // 4. Pass the server and app into your game logic
+  new gameserver(server, app);
+});
