@@ -15,8 +15,4 @@ app.get('/', (req, res) => {
 
 // 3. Initialize your game
 new GameServer(app);
-
-// 4. Start listening
-app.listen(port, "0.0.0.0", () => {
-  console.log(`Game is live on port ${port}`);
 });
