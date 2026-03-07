@@ -480,8 +480,8 @@ function gameserver(port) {
 								let pos = new vector(0, 0); // spawn pos
 								var a = new player(ws, id, pos, truename);
 								if (ws.isdeveloper) {
-									if (a.name == "Ahm_395 ") {
-										a.name = "🔧Ahmetcan - DEVELOPER🔨 "
+									if (a.name == "m7md43 ") {
+										a.name = "🔧m7md43 - DEVELOPER🔨 "
 										a.colorname = 2
 									}
 								}
@@ -989,3 +989,4 @@ gameserver.prototype = {
 
 }
 module.exports = gameserver
+
