@@ -16,8 +16,10 @@ app.use((req, res, next) => {
   next();
 });
 
-// 2. Serve all files in the main folder
-app.use(express.static(__dirname));
+app.get('/', (req, res) => {
+  // Use '..' to go UP one folder from 'src' to find the main directory
+  res.sendFile(path.join(__dirname, '..', 'sandbox.html'));
+});
 
 // 3. Fix "Cannot GET /" by explicitly sending the file
 app.get('/', (req, res) => {
@@ -26,3 +28,4 @@ app.get('/', (req, res) => {
 
 // 4. Initialize the game logic
 new gameserver(app);
+
