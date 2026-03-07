@@ -4,22 +4,20 @@ const gameserver = require('./gameserver');
 
 const app = express();
 
-// 1. CSP and Cache Killing
+// 1. CSP for injections (Essential for your userscripts/tools)
 app.use((req, res, next) => {
-  res.setHeader("Content-Security-Policy", "default-src * 'unsafe-inline' 'unsafe-eval'; script-src * 'self' 'unsafe-inline' 'unsafe-eval'; connect-src *; style-src * 'unsafe-inline';");
-  res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
+  res.setHeader(
+    "Content-Security-Policy", 
+    "default-src * 'unsafe-inline' 'unsafe-eval'; " +
+    "script-src * 'self' 'unsafe-inline' 'unsafe-eval'; " +
+    "connect-src *; " + 
+    "style-src 'self' 'unsafe-inline';"
+  );
   next();
 });
 
+// 2. This automatically serves index.html for "/"
 app.use(express.static(__dirname));
 
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'sandbox.html'));
-});
-
-// 2. Initialize the game
+// 3. Initialize game (Ensure this doesn't overwrite the app)
 new gameserver(app);
-
-// 3. New log message to verify deployment
-const now = new Date().toLocaleTimeString();
-console.log(`[${now}] SUCCESS: Server is running the UPDATED code!`);
