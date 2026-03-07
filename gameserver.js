@@ -86,10 +86,7 @@ server.listen(process.env.PORT || 80, "0.0.0.0", () => {
     console.log("Server is online and WebSockets are ready!");
 });
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
-
+	
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
@@ -1014,6 +1011,7 @@ gameserver.prototype = {
 
 }
 module.exports = gameserver
+
 
 
 
