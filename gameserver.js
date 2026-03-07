@@ -83,11 +83,6 @@ const wss = new WebSocket.Server({ server });
 // Your existing logic...
 port = process.env.PORT || 10000; 
 
-// Make sure the FIRST thing inside .listen is the port number!
-app.listen(port, "0.0.0.0", () => {
-    console.log(`Server is online and WebSockets are ready on port ${port}!`);
-});
-
 	
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
@@ -1013,6 +1008,7 @@ gameserver.prototype = {
 
 }
 module.exports = gameserver
+
 
 
 
