@@ -22,7 +22,3 @@ app.get('/', (req, res) => {
 // 4. Initialize game logic
 new gameserver(app);
 
-// 5. Start the server
-app.listen(port, "0.0.0.0", () => {
-  console.log(`Server is online on port ${port}`);
-});
