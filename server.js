@@ -1,3 +1,8 @@
+const fs = require('fs');
+console.log("Current Directory:", __dirname);
+console.log("Files in this folder:", fs.readdirSync(__dirname));
+console.log("Files in parent folder:", fs.readdirSync(path.join(__dirname, '..')));
+
 const express = require('express');
 const path = require('path');
 const gameserver = require('./gameserver');
@@ -28,4 +33,5 @@ app.get('/', (req, res) => {
 
 // 4. Initialize the game logic
 new gameserver(app);
+
 
