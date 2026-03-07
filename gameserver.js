@@ -1,5 +1,4 @@
-// Change 'port' to 'server' and add 'app' so we can use the ones from server.js
-function gameserver(server, app) { 
+function gameserver(server) {
 	const utils1 = require("./modules/IMPmodules/util")
 	const util = new utils1()
 	const vector = require('victor');
@@ -39,52 +38,20 @@ function gameserver(server, app) {
 	const border = new Rectangle(game.load(0) / 2, game.load(1) / 2, game.load(0), game.load(1))
 	const QuadTree = new quadtree(null, border, 12, 12)
 
-	// Attach the WebSocket server to the existing HTTP server
+	// Correctly attach WebSocket to the existing server
 	const wss = new WebSocket.Server({ server }); 
-
-    // --- DELETE THE OLD app.listen AND express() BLOCKS FROM HERE ---
-    // We don't need them here because server.js handles the port now.
 
 	var iper = ''
 	let new1stimecount = Date.now()
 	let updtime = Date.now()
 	let boradupd = Date.now()
 	const aobjids = new newobjids()
-    
-    // ... Rest of your game logic (TESTING, MAXBOTS, etc.)
-
-	
-const express = require('express');
-const http = require('http');
-const app = express();
-const server = http.createServer(app);
-
-// This creates the 'wss' variable that line 215 is looking for
-const wss = new WebSocket.Server({ server }); 
-
-// Your existing logic...
- 
-// Use a unique name like 'myPort' to avoid SyntaxErrors
-const myPort = process.env.PORT || 10000; 
-
-app.listen(myPort, "0.0.0.0", () => {
-    console.log(`[DEPLOY SUCCESS] Game is running on port ${myPort}`);
-});
-
-
-
-
-
-
-
-
-
 
 	const TESTING = true
 	const serverVer = 99;
-
 	const MAXBOTS = game.load(4)
 	var serverstarted = false
+
 	setTimeout(() => {
 		for (var i in self.entities) {
 			entity_1 = self.entities[i]
@@ -93,14 +60,10 @@ app.listen(myPort, "0.0.0.0", () => {
 			}
 			if (!entity_1.isdead) {
 				for (var j in self.entities) {
-
 					entity_2 = self.entities[j]
 					if (!entity_2.isdead) {
 						let distanceplay = util.getDistance2D(entity_1.x, entity_1.y, entity_2.x, entity_2.y)
-
-
 						if (entity_1 && entity_2) {
-
 							if (entity_2.id != entity_1.id) {
 								if (entity_1.type == entity_2.type && entity_2.type == 7) {
 									if (distanceplay <= entity_2.radius) {
@@ -121,16 +84,11 @@ app.listen(myPort, "0.0.0.0", () => {
 										}
 									}
 								}
-
 								if (entity_1.type == 4) {
-
 									if (entity_2.type == 4) {
-
-
 										if (distanceplay <= entity_2.radius + entity_1.radius + 300) {
 											entity_1.isdead = true
 										}
-
 									}
 								}
 								if (entity_1.type == 44 && entity_2.type == 44) {
@@ -139,37 +97,29 @@ app.listen(myPort, "0.0.0.0", () => {
 									}
 								}
 								if (entity_1.type == 27) {
-
 									if (entity_2.type == 4) {
 										if (distanceplay <= entity_1.radius + entity_2.radius + 150) {
-
 											entity_1.isdead = true
 										}
 									}
-
 								}
 								if (entity_1.type == 6) {
 									if (entity_2.type == 4 || entity_2.type == 27 || entity_2.type == 10) {
 										if (distanceplay <= entity_1.radius + entity_2.radius + 50) {
-
 											entity_1.isdead = true
 										}
 									}
 								}
 								if (entity_1.type == 27) {
-
 									if (entity_2.type == 27) {
 										if (distanceplay <= entity_1.radius + entity_2.radius + 300) {
-
 											entity_2.isdead = true
 										}
 									}
-
 								}
 							}
 						}
 					}
-
 				}
 			}
 		}
@@ -177,17 +127,39 @@ app.listen(myPort, "0.0.0.0", () => {
 	}, TESTING ? 1000 : 5000);
 
 	var ips = []
-
 	let playersNum = 0;
-
 	this.entities = {};
-
 	this.ws_new = {}
-
 	let self = this
 	new map(aobjids, self.entities)
-	setTimeout(() => {
 
+	setTimeout(() => {
+		for (let i = 0; i < MAXBOTS; i++) {
+			var maanimals = tierload.tier14(false)
+			new createbot(game.load(9), writer, aobjids, self.entities, maanimals, name.newnames(), 1500, false, util.randomNumber(0, 0), util.randomNumber(0, 0))
+		}
+	}, TESTING ? 1000 : 5000);
+
+	try {
+		wss.on('error', function (error) {
+			console.log(error)
+		})
+		wss.on('connection', function connection(ws) {
+			console.log("new player :" + ws._socket.remoteAddress)
+			var sum = 0
+			for (let i in ips) {
+				if (ips[i] == ws._socket.remoteAddress) {
+					sum++
+				}
+				if (sum >= game.load(6)) {
+					ws.close();
+					break;
+				}
+			}
+
+			ws.binaryType = 'arraybuffer';
+			ws.exists = false
+			ws.correctstring = util.
 
 		for (let i = 0; i < MAXBOTS; i++) {
 			var maanimals = tierload.tier14(false)
@@ -990,6 +962,7 @@ gameserver.prototype = {
 
 }
 module.exports = gameserver
+
 
 
 
