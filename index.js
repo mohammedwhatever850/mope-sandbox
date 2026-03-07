@@ -1,17 +1,23 @@
 const express = require('express');
 const http = require('http');
 const path = require('path');
-const gameserver = require('./gameserver'); // Loads your big script
+const gameserver = require('./gameserver'); 
 
 const app = express();
-// This automatically provides the port (e.g., 10000 on Render or 8080 locally)
-const port = process.env.PORT || 8080; 
+const server = http.createServer(app);
+const port = process.env.PORT || 8080;
 
-// 1. Serve your website files from the "public" folder
+// This serves your website files (html, css, js) 
+// Make sure your client files are in a folder named "public"
 app.use(express.static(path.join(__dirname, 'public')));
 
-// 2. Start the Game Server
-// This passes the port to your function gameserver(port)
-const game = new gameserver(port);
+const game = new gameserver();
 
-console.log(`Server is booting on port ${port}...`);
+// This connects the web port to your game logic
+server.on('upgrade', (request, socket, head) => {
+    game.handleUpgrade(request, socket, head);
+});
+
+server.listen(port, () => {
+    console.log(`Server running on port ${port}`);
+});
