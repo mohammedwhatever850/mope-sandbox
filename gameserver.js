@@ -73,9 +73,8 @@ function gameserver(port) {
 
 
 
-	const wss = new WebSocket.Server({
-		port: port
-	});
+// This tells the WebSocket to share the port with the HTTP server
+const wss = new WebSocket.Server({ noServer: true });
 
 
 
@@ -983,7 +982,15 @@ function gameserver(port) {
 			pa()
 		}, 0);
 	}
-	pa()
+pa()
+
+    // --- ADD THIS BLOCK HERE ---
+	this.handleUpgrade = function(request, socket, head) {
+		wss.handleUpgrade(request, socket, head, (ws) => {
+			wss.emit('connection', ws, request);
+		});
+	};
+    // ---------------------------
 }
 gameserver.prototype = {
 
